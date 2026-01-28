@@ -23,9 +23,6 @@ export default function Reservation() {
   
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [showForm, setShowForm] = useState(false)
-  const [showAdmin, setShowAdmin] = useState(false)
-  const [adminPassword, setAdminPassword] = useState('')
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -38,8 +35,8 @@ export default function Reservation() {
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<'success' | 'error' | ''>('')
 
-  // Mot de passe admin (simple pour démo - en production, utiliser un système plus sécurisé)
-  const ADMIN_PASSWORD = 'admin123'
+  // Email du restaurateur (à configurer)
+  const RESTAURATEUR_EMAIL = 'restaurant@lejardinsecret.fr'
 
   // Charger les réservations depuis localStorage au montage
   useEffect(() => {
@@ -89,8 +86,11 @@ export default function Reservation() {
     // Ajouter la réservation
     setReservations([...reservations, newReservation])
     
-    // Envoyer l'email de confirmation
+    // Envoyer l'email de confirmation au client
     sendConfirmationEmail(newReservation)
+    
+    // Envoyer un rapport au restaurateur
+    sendRestaurateurEmail()
     
     // Réinitialiser le formulaire
     setFormData({
@@ -116,36 +116,8 @@ export default function Reservation() {
     setTimeout(() => setMessage(''), 3000)
   }
 
-  const handleAdminLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (adminPassword === ADMIN_PASSWORD) {
-      setIsAdminAuthenticated(true)
-      setAdminPassword('')
-      setMessage('Accès admin autorisé')
-      setMessageType('success')
-      setTimeout(() => setMessage(''), 2000)
-    } else {
-      setMessage('Mot de passe incorrect')
-      setMessageType('error')
-      setTimeout(() => setMessage(''), 3000)
-    }
-  }
-
-  const handleAdminLogout = () => {
-    setIsAdminAuthenticated(false)
-    setShowAdmin(false)
-    setMessage('Déconnexion admin')
-    setMessageType('success')
-    setTimeout(() => setMessage(''), 2000)
-  }
-
-  // Fonction pour envoyer un email de confirmation (simulation)
+  // Fonction pour envoyer un email de confirmation au client
   const sendConfirmationEmail = (reservation: Reservation) => {
-    // En production, utiliser un service d'envoi d'emails comme EmailJS, SendGrid, etc.
-    console.log('Email de confirmation envoyé à:', reservation.email)
-    console.log('Détails de la réservation:', reservation)
-    
-    // Pour la démo, on simule l'envoi d'email
     const emailContent = `
       Réservation confirmée au restaurant "Le Jardin Secret"
       
@@ -167,6 +139,43 @@ export default function Reservation() {
       sentAt: new Date().toISOString()
     })
     localStorage.setItem('sent-emails', JSON.stringify(sentEmails))
+  }
+
+  // Fonction pour envoyer un email au restaurateur avec toutes les réservations
+  const sendRestaurateurEmail = () => {
+    const emailContent = `
+      📋 RAPPORT DES RÉSERVATIONS - Le Jardin Secret
+      📅 ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}
+      
+      📊 Total des réservations: ${reservations.length}
+      
+      ${reservations.length > 0 ? `
+      📝 DÉTAIL DES RÉSERVATIONS:
+      ${reservations.map((res, index) => `
+      ${index + 1}. ${res.name}
+         📧 ${res.email} | 📞 ${res.phone}
+         📅 ${new Date(res.date).toLocaleDateString('fr-FR')} à ${res.time}
+         👥 ${res.guests} personne${res.guests > 1 ? 's' : ''}
+         ${res.specialRequests ? `💬 ${res.specialRequests}` : ''}
+         🕐 Réservé le ${new Date(res.createdAt).toLocaleString('fr-FR')}
+      `).join('')}
+      ` : 'Aucune réservation aujourd\'hui'}
+      
+      ---
+      🍽️ Le Jardin Secret
+      📍 Paris, France
+      📞 +33 1 XX XX XX XX
+    `
+    
+    // Stocker l'email du restaurateur dans localStorage pour simulation
+    const restaurateurEmails = JSON.parse(localStorage.getItem('restaurateur-emails') || '[]')
+    restaurateurEmails.push({
+      to: RESTAURATEUR_EMAIL,
+      subject: `Rapport des réservations - ${new Date().toLocaleDateString('fr-FR')}`,
+      content: emailContent,
+      sentAt: new Date().toISOString()
+    })
+    localStorage.setItem('restaurateur-emails', JSON.stringify(restaurateurEmails))
   }
 
   const getAvailableTimes = () => {
@@ -216,9 +225,9 @@ export default function Reservation() {
           </motion.div>
         )}
 
-        {/* Boutons d'action */}
+        {/* Bouton de réservation */}
         <motion.div 
-          className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
+          className="flex justify-center mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -230,17 +239,6 @@ export default function Reservation() {
             onClick={() => setShowForm(!showForm)}
           >
             {showForm ? 'Fermer le formulaire' : 'Faire une réservation'}
-          </motion.button>
-          
-          {/* Bouton admin caché - seulement visible si on connaît le raccourci */}
-          <motion.button 
-            className="btn-secondary opacity-50 hover:opacity-100 text-xs"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowAdmin(!showAdmin)}
-            title="Accès administrateur"
-          >
-            🍽️ Admin
           </motion.button>
         </motion.div>
 
@@ -370,146 +368,7 @@ export default function Reservation() {
           </motion.div>
         )}
 
-        {/* Section Admin */}
-        {showAdmin && (
-          <motion.div 
-            className="max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-          >
-            {!isAdminAuthenticated ? (
-              // Formulaire de connexion admin
-              <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8">
-                <h3 className="text-2xl font-serif font-semibold text-primary mb-6 text-center">
-                  Accès Administrateur
-                </h3>
-                <form onSubmit={handleAdminLogin} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-charcoal mb-2">
-                      Mot de passe
-                    </label>
-                    <input
-                      type="password"
-                      value={adminPassword}
-                      onChange={(e) => setAdminPassword(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      placeholder="Entrez le mot de passe admin"
-                      required
-                    />
-                  </div>
-                  <motion.button
-                    type="submit"
-                    className="w-full btn-primary bg-accent hover:bg-accent/90"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Se connecter
-                  </motion.button>
-                </form>
-                <p className="text-xs text-gray-500 text-center mt-4">
-                  Mot de passe par défaut : admin123
-                </p>
-              </div>
-            ) : (
-              // Interface admin avec les réservations
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-2xl font-serif font-semibold text-primary">
-                    Réservations ({reservations.length})
-                  </h3>
-                  <div className="flex gap-3">
-                    <motion.button
-                      onClick={handleAdminLogout}
-                      className="btn-secondary text-sm"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Déconnexion
-                    </motion.button>
-                  </div>
-                </div>
-                
-                {reservations.length === 0 ? (
-                  <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-                    <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">Aucune réservation pour le moment</p>
-                  </div>
-                ) : (
-                  <div className="grid gap-4">
-                    {reservations
-                      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                      .map((reservation) => (
-                        <motion.div
-                          key={reservation.id}
-                          className="bg-white rounded-lg shadow-md p-6 border border-gray-100"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 20 }}
-                        >
-                          <div className="flex justify-between items-start">
-                            <div className="flex-1">
-                              <div className="grid md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                  <h4 className="font-semibold text-lg text-primary mb-2">
-                                    {reservation.name}
-                                  </h4>
-                                  <div className="space-y-1 text-sm text-gray-600">
-                                    <div className="flex items-center gap-2">
-                                      <Mail className="w-4 h-4" />
-                                      {reservation.email}
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                      <Phone className="w-4 h-4" />
-                                      {reservation.phone}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="text-right">
-                                  <div className="space-y-1">
-                                    <div className="flex items-center gap-2 justify-end text-sm">
-                                      <Calendar className="w-4 h-4" />
-                                      {new Date(reservation.date).toLocaleDateString('fr-FR')}
-                                    </div>
-                                    <div className="flex items-center gap-2 justify-end text-sm">
-                                      <Clock className="w-4 h-4" />
-                                      {reservation.time}
-                                    </div>
-                                    <div className="flex items-center gap-2 justify-end text-sm">
-                                      <Users className="w-4 h-4" />
-                                      {reservation.guests} {reservation.guests === 1 ? 'personne' : 'personnes'}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              {reservation.specialRequests && (
-                                <div className="mt-3 p-3 bg-gray-50 rounded text-sm text-gray-600">
-                                  <strong>Demandes spéciales :</strong> {reservation.specialRequests}
-                                </div>
-                              )}
-                              <div className="mt-3 text-xs text-gray-400">
-                                Réservé le {new Date(reservation.createdAt).toLocaleString('fr-FR')}
-                              </div>
-                            </div>
-                            <motion.button
-                              onClick={() => handleDelete(reservation.id)}
-                              className="ml-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                              title="Annuler la réservation"
-                            >
-                              <X className="w-5 h-5" />
-                            </motion.button>
-                          </div>
-                        </motion.div>
-                      ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </motion.div>
-        )}
-      </div>
+        </div>
     </section>
   )
 }
