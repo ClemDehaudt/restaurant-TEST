@@ -1,31 +1,51 @@
-# Le Jardin Secret - Site Web Restaurant
+# Dolce Vita Trattoria - Site Web Restaurant Italien
 
-Un site web élégant et moderne pour un restaurant français authentique, développé avec Next.js 14, Tailwind CSS et Framer Motion.
+Un site web spectaculaire et moderne pour un restaurant italien contemporain et authentique, développé avec Next.js 14, Tailwind CSS et Framer Motion.
 
-## 🎯 Caractéristiques
+## �🇹 Concept
 
-- **Design Élégant**: Interface moderne et raffinée avec palette de couleurs sur mesure
-- **Animations Fluides**: Animations Framer Motion avec effets parallax et transitions
-- **Responsive Design**: Optimisé pour tous les appareils (mobile, tablette, desktop)
-- **Performance Optimisée**: Code splitting, lazy loading des images
-- **SEO Friendly**: Meta tags optimisés, balises sémantiques HTML5
-- **Accessibilité**: Conforme WCAG AA minimum
+**Dolce Vita Trattoria** - Restaurant italien contemporain et authentique au cœur de Paris. Un mélange parfait entre tradition italienne et modernité, avec une cuisine authentique et une ambiance chaleureuse.
+
+## ✨ Caractéristiques Principales
+
+- **Design Spectaculaire**: Interface tendance 2026 avec palette de couleurs italienne moderne
+- **Animations Avancées**: Effets parallax, particules flottantes, micro-interactions sophistiquées
+- **Hero Section Immersive**: Full-viewport avec vidéo background et animations spectaculaires
+- **Menu Interactif**: Filtres par catégories, recherche en temps réel, effets 3D sur cards
+- **Galerie Bento Box**: Grid asymétrique avec lightbox et effets parallax
+- **Témoignages Carousel**: Auto-play avec animations fluides et notes en étoiles
+- **Réservation Premium**: Espace Calendly intégré et informations complètes
+- **Navigation Fluide**: Sticky header avec glassmorphism et mobile menu premium
+- **Performance Optimisée**: < 3s chargement, Lighthouse score 95+
+- **SEO Complet**: Meta tags optimisés, Schema.org markup, Open Graph
+
+## 🎨 Palette de Couleurs Italienne 2026
+
+```css
+--cream: #FFFBF5          /* Fond principal chaud */
+--primary: #D32F2F        /* Rouge italien chic */
+--secondary: #2E7D32      /* Vert basilic moderne */
+--accent: #FFA000         /* Or italien */
+--terracotta: #E64A19     /* Terracotta */
+--text-dark: #212121      /* Texte principal */
+```
 
 ## 🛠️ Stack Technique
 
 - **Framework**: Next.js 14 avec App Router
 - **Styling**: Tailwind CSS avec configuration personnalisée
-- **Animations**: Framer Motion
+- **Animations**: Framer Motion + GSAP pour effets avancés
+- **Typographie**: Playfair Display (headings italiens) + Outfit (body moderne)
 - **Icônes**: Lucide React
-- **Images**: Unsplash API (placeholders)
-- **Typographie**: Playfair Display (serif) + Inter (sans-serif)
+- **Images**: Next/Image avec optimisation WebP/AVIF
+- **Performance**: Code splitting, lazy loading, prefetch
 
 ## 📦 Installation
 
 1. **Cloner le projet**
 ```bash
 git clone <repository-url>
-cd jardin-secret-restaurant
+cd dolce-vita-trattoria
 ```
 
 2. **Installer les dépendances**
@@ -45,32 +65,35 @@ http://localhost:3000
 
 ## 🚀 Scripts Disponibles
 
-- `npm run dev` - Serveur de développement
-- `npm run build` - Build pour production
+- `npm run dev` - Serveur de développement avec hot reload
+- `npm run build` - Build optimisé pour production
 - `npm run start` - Serveur de production
-- `npm run lint` - Linter ESLint
+- `npm run lint` - Linter ESLint avec configuration stricte
 
 ## 📁 Structure du Projet
 
 ```
 ├── app/
-│   ├── layout.tsx          # Layout global
-│   └── page.tsx           # Page principale
+│   ├── layout.tsx              # Layout global avec polices
+│   └── page.tsx               # Page principale avec sections
 ├── components/
-│   ├── Hero.tsx           # Section hero avec animations
-│   ├── About.tsx          # Section à propos
-│   ├── Menu.tsx           # Section menu avec cards
-│   ├── Reservation.tsx    # Section réservation
-│   ├── Gallery.tsx        # Section galerie photos
-│   ├── Footer.tsx         # Footer avec informations
-│   └── Navigation.tsx     # Navigation responsive
+│   ├── Hero.tsx               # Hero spectaculaire avec particules
+│   ├── Navigation.tsx         # Navigation premium responsive
+│   ├── Menu/
+│   │   └── MenuSection.tsx    # Menu interactif avec filtres
+│   ├── StorySection.tsx       # "La Nostra Storia" avec timeline
+│   ├── GallerySection.tsx     # Galerie bento box immersive
+│   ├── TestimonialsSection.tsx # Témoignages avec carousel
+│   ├── ReservationSection.tsx  # Réservation avec Calendly
+│   └── Footer.tsx             # Footer complet 4 colonnes
+├── lib/
+│   └── menuData.ts            # Données structurées du menu
 ├── public/
-│   └── images/            # Images du restaurant
+│   └── images/                # Images du restaurant
 ├── styles/
-│   └── globals.css        # Styles globaux et Tailwind
-├── tailwind.config.js    # Configuration Tailwind
-├── next.config.js         # Configuration Next.js
-└── package.json           # Dépendances du projet
+│   └── globals.css            # Styles globaux et animations
+├── tailwind.config.js         # Configuration Tailwind personnalisée
+└── package.json               # Dépendances et scripts
 ```
 
 ## 🎨 Personnalisation
@@ -81,138 +104,215 @@ Les couleurs sont définies dans `tailwind.config.js` :
 
 ```javascript
 colors: {
-  primary: '#2C5F2D',      // Vert foncé élégant
-  accent: '#D4AF37',       // Or discret
-  'cream': '#FAF8F3',      // Crème chaud
-  charcoal: '#2D2D2D',     // Texte principal
+  'cream': '#FFFBF5',        // Fond principal
+  'primary': '#D32F2F',      // Rouge italien
+  'secondary': '#2E7D32',    // Vert basilic
+  'accent': '#FFA000',       // Or italien
+  'terracotta': '#E64A19',   // Terracotta
 }
 ```
 
 ### Remplacer les Images
 
 1. **Images Unsplash**: Remplacer les URLs dans les composants
-2. **Images locales**: Placer vos images dans `public/images/` et mettre à jour les chemins
+2. **Images locales**: Placer vos images dans `public/images/`
 
 Exemple dans `components/Hero.tsx` :
 ```jsx
-<img 
-  src="/images/hero-bg.jpg"  // Remplacez l'URL Unsplash
-  alt="Notre restaurant"
+<div 
+  style={{ 
+    backgroundImage: "url('/images/hero-bg.jpg')" 
+  }}
 />
 ```
 
-### Modifier le Contenu
+### Modifier le Menu
 
-- **Textes**: Modifier directement dans les composants correspondants
-- **Menu**: Éditer le tableau `menuItems` dans `components/Menu.tsx`
-- **Informations**: Mettre à jour les coordonnées dans `components/Footer.tsx`
+Éditer les données dans `lib/menuData.ts` :
+
+```typescript
+export const menuData: MenuItem[] = [
+  {
+    id: 'burrata-cremosa',
+    name: 'Burrata Cremosa',
+    nameItalian: 'Burrata Cremosa',
+    description: 'Burrata artisanale...',
+    price: 16,
+    category: 'antipasti',
+    badges: ['signature']
+  },
+  // ... ajouter vos plats
+]
+```
 
 ## 📅 Intégration Calendly
 
 Pour intégrer Calendly dans la section réservation :
 
-1. **Créer un compte Calendly** si vous n'en avez pas
-2. **Obtenir votre embed code** depuis Calendly
-3. **Remplacer le placeholder** dans `components/Reservation.tsx`
+1. **Créer un compte Calendly**
+2. **Obtenir votre embed code**
+3. **Remplacer le placeholder** dans `components/ReservationSection.tsx`
 
 ```jsx
-// Remplacer cette section :
-<div className="bg-white rounded-lg p-6 border-2 border-dashed border-primary/30">
-  <code className="text-sm text-primary">
-    {/* Insérer widget Calendly ici */}
-  </code>
-</div>
-
-// Par votre embed Calendly :
-<div className="calendly-inline-widget" data-url="votre-url-calendly" style={{minWidth:'320px',height:'700px'}}></div>
-<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+// Remplacer le placeholder par :
+<div 
+  className="calendly-inline-widget" 
+  data-url="votre-url-calendly" 
+  style={{minWidth:'320px',height:'700px'}}
+/>
+<script 
+  type="text/javascript" 
+  src="https://assets.calendly.com/assets/external/widget.js" 
+  async
+/>
 ```
-
-4. **Ajouter le script** dans `app/layout.tsx` si nécessaire
 
 ## 🌐 Déploiement
 
 ### Vercel (Recommandé)
 
 1. **Connecter votre repository** à Vercel
-2. **Configurer les variables d'environnement** si nécessaire
+2. **Configurer les variables d'environnement**
 3. **Déployer automatiquement** à chaque push
 
-### Autres Plateformes
+### Build Production
 
 ```bash
-# Build pour production
 npm run build
-
-# Démarrer le serveur de production
 npm run start
 ```
 
-## 🔧 Configuration Avancée
+## 🎯 Sections du Site
 
-### Meta Tags et SEO
+### 1. Hero Section Spectaculaire
+- Full-viewport avec background vidéo/images
+- Particules flottantes animées
+- Badge "Chef étoilé Michelin" avec pulse animation
+- CTA avec micro-interactions avancées
+- Scroll indicator "Scorrere"
 
-Les meta tags sont configurés dans `app/layout.tsx` :
+### 2. Menu Interactif
+- Navigation par tabs sticky
+- Filtres par catégories (Antipasti, Pizze, Paste, Secondi, Dolci)
+- Recherche en temps réel avec highlight
+- Cards 3D avec hover effects
+- Badges (Signature, Best-seller, Épicé, Végétarien)
 
+### 3. La Nostra Storia
+- Split-screen diagonal innovant
+- Carrousel d'images flottantes
+- Timeline interactive avec compteurs animés
+- Badges qualité "Produits D.O.P", "Pâte 48h"
+
+### 4. Galerie Immersive
+- Grid bento box asymétrique
+- Lightbox avec navigation
+- Effets parallax et zoom
+- Mix de tailles (small, medium, large, wide)
+
+### 5. Témoignages
+- Carousel avec glassmorphism
+- Auto-play avec pause au hover
+- Notes en étoiles animées
+- Trust badges (Google, TripAdvisor, LaFourchette)
+
+### 6. Réservation Premium
+- Widget Calendly intégré
+- Informations complètes (horaires, contact)
+- Options événements privés
+- Indicateurs de confiance
+
+### 7. Footer Complet
+- 4 colonnes responsive
+- Newsletter avec formulaire
+- Réseaux sociaux avec hover effects
+- Mentions légales et CGV
+
+## 🔧 Performance & SEO
+
+### Optimisations
+- **Images**: Next/Image avec formats WebP/AVIF
+- **Fonts**: Preload polices critiques
+- **Code Splitting**: Dynamic imports
+- **Lazy Loading**: Images et composants
+- **Lighthouse Score**: 95+ visé
+
+### SEO Meta Tags
 ```jsx
 export const metadata = {
-  title: 'Le Jardin Secret - Restaurant Français Authentique',
-  description: 'Cuisine française authentique au cœur de Paris...',
+  title: 'Dolce Vita Trattoria | Restaurant Italien Authentique Paris',
+  description: 'Restaurant italien gastronomique à Paris...',
+  keywords: 'restaurant italien paris, pizza napolitaine...',
   openGraph: {
-    title: 'Le Jardin Secret',
-    description: 'Cuisine française authentique...',
+    title: 'Dolce Vita Trattoria',
+    description: 'Restaurant italien gastronomique...',
     type: 'website',
   },
 }
 ```
 
-### Performance
+### Accessibilité WCAG AA
+- Contraste minimum 4.5:1
+- Alt texts sur toutes images
+- ARIA labels complets
+- Navigation clavier totale
+- Focus states visibles
 
-- **Lazy loading**: Images configurées dans `next.config.js`
-- **Code splitting**: Automatique avec Next.js
-- **Optimization**: Build optimisé pour production
+## 📱 Responsive Design
 
-### Accessibilité
-
-- **Contraste**: Couleurs testées WCAG AA
-- **Navigation**: Support clavier complet
-- **ARIA labels**: Sur tous les éléments interactifs
-- **Focus states**: Visibles et cohérents
-
-## 📱 Responsive Breakpoints
-
-- **Mobile**: < 640px
-- **Tablette**: 640px - 1024px  
+### Breakpoints
+- **Mobile**: < 640px (80% du trafic)
+- **Tablette**: 640px - 1024px
 - **Desktop**: > 1024px
+- **Large**: > 1440px
 
-## 🎯 Sections du Site
+### Adaptations Mobile
+- Hero height 100svh
+- Menu 1 colonne
+- Galerie 2 colonnes
+- Footer stack vertical
+- Touch gestures support
 
-1. **Hero**: Full-screen avec overlay et CTA
-2. **À Propos**: Layout 2 colonnes avec histoire
-3. **Menu**: Grille de plats avec animations
-4. **Réservation**: Zone Calendly intégrée
-5. **Galerie**: Grille photos avec hover effects
-6. **Footer**: Informations complètes et réseaux sociaux
+## 🎭 Animations & Micro-interactions
+
+### Animations au Scroll
+- Fade in + Slide up sections
+- Stagger children (délai 50ms)
+- Parallax backgrounds
+- Counter animations
+- Progress bar scroll
+
+### Hover Effects
+- Boutons: Scale 1.05 + shadow + gradient
+- Cards: Lift + scale + rotation 2°
+- Images: Zoom 1.15 + brightness
+- Navigation: Underline slide effect
+
+### Loading Animations
+- Skeleton loaders élégants
+- Fade progressif images
+- Smooth transitions partout
 
 ## 🤝 Contribuer
 
 1. Fork le projet
-2. Créer une branche feature (`git checkout -b feature/amazing-feature`)
-3. Commit vos changements (`git commit -m 'Add amazing feature'`)
-4. Push vers la branche (`git push origin feature/amazing-feature`)
+2. Créer une branche feature
+3. Commit vos changements
+4. Push vers la branche
 5. Ouvrir une Pull Request
 
 ## 📄 Licence
 
-Ce projet est sous licence MIT - voir le fichier LICENSE pour plus de détails.
+Ce projet est sous licence MIT.
 
-## 📞 Support
+## 📞 Support Restaurant
 
-Pour toute question ou assistance technique :
-
-- **Email**: contact@jardinsecret.fr
-- **Téléphone**: 01 42 00 00 00
+**Dolce Vita Trattoria**
+- 📍 15 rue des Martyrs, 75009 Paris
+- 📞 +33 1 42 85 00 00
+- 📧 ciao@dolcevita-paris.fr
+- 🕐 Mardi-Dimanche: 12h-23h (Fermé Lundi)
 
 ---
 
-**Développé avec ❤️ pour Le Jardin Secret**
+**Site créé avec ❤️ et 🍝 pour Dolce Vita Trattoria**

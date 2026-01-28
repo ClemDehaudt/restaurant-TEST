@@ -1,16 +1,26 @@
 import '../styles/globals.css'
-import { Inter } from 'next/font/google'
+import { Playfair_Display, Outfit } from 'next/font/google'
 import Navigation from '@/components/Navigation'
 
-const inter = Inter({ subsets: ['latin'] })
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-serif',
+  weight: ['600', '700', '800']
+})
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  weight: ['400', '500', '600']
+})
 
 export const metadata = {
-  title: 'Le Jardin Secret - Restaurant Français Authentique',
-  description: 'Cuisine française authentique au cœur de Paris. Découvrez nos plats signatures dans une ambiance élégante et raffinée.',
-  keywords: 'restaurant français, Paris, cuisine authentique, gastronomie',
+  title: 'Dolce Vita Trattoria | Restaurant Italien Authentique Paris',
+  description: 'Restaurant italien gastronomique à Paris. Pizza napolitaine au feu de bois, pâtes fraîches maison, cuisine authentique. Réservez votre table.',
+  keywords: 'restaurant italien paris, pizza napolitaine, pâtes fraîches, trattoria',
   openGraph: {
-    title: 'Le Jardin Secret - Restaurant Français Authentique',
-    description: 'Cuisine française authentique au cœur de Paris',
+    title: 'Dolce Vita Trattoria | Restaurant Italien Authentique Paris',
+    description: 'Restaurant italien gastronomique à Paris. Pizza napolitaine au feu de bois, pâtes fraîches maison.',
     type: 'website',
   },
 }
@@ -21,11 +31,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={`${playfair.variable} ${outfit.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={inter.className}>
+      <body className="font-sans bg-cream text-text-dark">
         <Navigation />
         {children}
       </body>
